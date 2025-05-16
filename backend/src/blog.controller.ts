@@ -17,41 +17,41 @@ const app = new Hono()
 app.use("/blog/*", jwtChecker) // middleware for JWT
 
 app.post("/post/add", jwtChecker, async (c) => {
-  const { title, content }: { title: string, content: string } = await c.req.json()
-  if (!title && content) throw new Error("no data to post")
+    const { title, content }: { title: string, content: string } = await c.req.json()
+    if (!title && content) throw new Error("no data to post")
 
-  const client = await clientThrower()
-  const userId = c.get("accessToken")
-  if (!userId) throw new Error("not logged in for posts")
-  const authorId = await verify(userId, privateKey)
+    const client = await clientThrower()
+    const userId = c.get("accessToken")
+    if (!userId) throw new Error("not logged in for posts")
+    const authorId = await verify(userId, privateKey)
 
-  const postMade = await client.post.create({
-    data: {
-      title, content, authorId: Number(authorId.id)
-    }
-  })
+    const postMade = await client.post.create({
+        data: {
+            title, content, authorId: Number(authorId.id)
+        }
+    })
 
-  return c.json({ "msg": postMade })
+    return c.json({ "msg": postMade })
 })
 
 // app.get("/",healthCheck)
 
-app.get("/blog/fetchPost/:title",async(c)=>{
-const {title} = c.req.param
+app.get("/blog/fetchPost/:title", async (c) => {
+    const { title } = c.req.param
 
-const data = await clientThrower().post.findMany({
-  where:{
-    title
-  },
-  orderBy:{
-    updatedAt:"desc"
-  },
-  take:10
-})
+    const data = await clientThrower().post.findMany({
+        where: {
+            title
+        },
+        orderBy: {
+            updatedAt: "desc"
+        },
+        take: 10
+    })
 
-return c.json({
-"posts":data
-})
+    return c.json({
+        "posts": data
+    })
 })
 
 

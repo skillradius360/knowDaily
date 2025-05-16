@@ -21,4 +21,4 @@ type userSchemaInterface = z.infer<typeof userSchema>;
 type userReturnType = z.infer<typeof userReturnSchema>;
 type loginInterface = z.infer<typeof loginSchema>;
 
-export {userReturnSchema,userReturnType,loginInterface}
+export {userSchemaInterface,userReturnType,loginInterface}
