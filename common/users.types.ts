@@ -1,9 +1,10 @@
-
+ import {z} from "zod"
+ 
 
 const userSchema = z.object({
   email: z.string().email(),
   name: z.string(),
-  password: z.string().optional(),
+  password: z.string(),
 });
 
 const userReturnSchema = z.object({

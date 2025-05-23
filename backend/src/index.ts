@@ -5,6 +5,7 @@ import { decode, sign, verify } from "hono/jwt"
 import healthCheck from './auth.middleware'
 import { z } from "zod";
 import auth from "./user.controller"
+import blog from "./blog.controller"
 
 const app = new Hono()
 
@@ -15,15 +16,21 @@ export function clientThrower() {
 }
 
 
-
+app.get('/', async (c) => {
+    const client = clientThrower()
+    const xx = await client.user.findUnique({
+        where: {
+            id: 1
+        }
+    })
+    return c.json(xx)
+})
 
 
 
 
     app.route("/users",auth)
+    app.route("/posts",blog)
 
 
 export default app
-export {
-  userSchemaInterface,userReturnType,loginInterface
-}

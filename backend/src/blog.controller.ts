@@ -16,7 +16,7 @@ const app = new Hono()
 
 app.use("/blog/*", jwtChecker) // middleware for JWT
 
-app.post("/post/add", jwtChecker, async (c) => {
+app.post("/add", jwtChecker, async (c) => {
     const { title, content }: { title: string, content: string } = await c.req.json()
     if (!title && content) throw new Error("no data to post")
 
@@ -36,7 +36,7 @@ app.post("/post/add", jwtChecker, async (c) => {
 
 // app.get("/",healthCheck)
 
-app.get("/blog/fetchPost/:title", async (c) => {
+app.get("/fetchPost/:title", async (c) => {
     const { title } = c.req.param
 
     const data = await clientThrower().post.findMany({

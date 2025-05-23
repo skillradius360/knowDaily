@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import { decode, sign, verify } from "hono/jwt"
 import { setCookie, getCookie } from 'hono/cookie'
 import { Next } from 'hono/types'
-import { userSchemaInterface, userReturnType, loginInterface } from "../../common"
+import { userSchemaInterface, userReturnType, loginInterface } from "../../common/users.types"
 import { clientThrower } from './index'
 import { privateKey } from './constants'
 
@@ -23,7 +23,17 @@ app.get('/', async (c) => {
 app.post("/signUp", async (c) => {
 
     const client = clientThrower()
-    const { name, email }: userSchemaInterface = await c.req.json()
+    const { name, email ,password}: userSchemaInterface = await c.req.json()
+
+    const ifUserExists = await client.user.findUnique({
+        where:{
+            name,email,password
+        }
+    })
+
+    // if (ifUserExists && ifUserExists.email
+
+    // ) return  c.json({msg:"user exists",status:401})
 
     const creationRes = await client.user.create({
         data: {
